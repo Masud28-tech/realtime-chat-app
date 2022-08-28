@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
-import Logo from '../assets/chat-logo.svg';
-
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify'; // For warning
 import 'react-toastify/dist/ReactToastify.css';
+
+import styled from 'styled-components';
+import Logo from '../assets/chat-logo.svg';
+import { registerRoute } from '../utils/APIRoutes';
+
 
 const defaultValues = {
   username: '',
@@ -12,7 +15,19 @@ const defaultValues = {
   password: '',
   confirmPassword: '',
 }
+
+const toastOptions = {
+  // position: 'upper-right',
+  autoClose: 8000,
+  pauseOnHover: true,
+  draggable: true,
+  theme: 'dark',
+}
+
+
 const Register = () => {
+
+  const navigate = useNavigate();
 
   const [credentials, setCredentials] = useState(defaultValues);
   const { username, email, password, confirmPassword } = credentials;
@@ -21,32 +36,45 @@ const Register = () => {
     setCredentials({ ...credentials, [event.target.name]: event.target.value });
   }
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    handleValidation();
-  }
+  const handleFormValidation = () => {
+    const { email, username, password, confirmPassword } = credentials;
 
-  const handleValidation = () => {
-    const { password, confirmPassword } = credentials;
     if (password !== confirmPassword) {
-      toast.error("Password and Confirm Password are not same!");
+      toast.error("Password and Confirm Password are not same!", toastOptions);
       return false;
     }
     else if (password.length < 5) {
-      toast.error("Password must have atleast 5 characters");
+      toast.error("Password must have atleast 5 characters", toastOptions);
       return false;
     }
     else if (username.length < 1) {
-      toast.error("Username must have atleast 1 character");
+      toast.error("Username must have atleast 1 character", toastOptions);
       return false;
     }
     else if (!email.length) {
-      toast.error("email must not empty");
+      toast.error("email must not empty", toastOptions);
       return false;
     }
     return true;
   }
 
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (handleFormValidation()) {
+      const { username, email, password } = credentials;
+      
+      const { data } = await axios.post(registerRoute, { username, email, password });
+
+      if (!data.status) {
+        toast.error(data.msg, toastOptions);
+      }
+      else {
+        localStorage.setItem("chat-app-user", JSON.stringify(data.user));
+        navigate('/');
+      }
+    }
+  };
 
   return (
     <>
