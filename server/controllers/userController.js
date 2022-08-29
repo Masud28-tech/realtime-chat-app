@@ -28,8 +28,32 @@ module.exports.register = async (req, res, next) => {
 
         delete user.password;   // Delete original password for security from backend
 
-        res.json({status: true, user});
+        return res.json({status: true, user});
+    } 
+    catch (error) {
+        next(error);
+    }
+};
 
+module.exports.login = async (req, res, next) => {
+    try {
+        //RECIEVE DATA FROM FRONTEND
+        const { username, password } = req.body; 
+        
+        // CREDENTIALS CHECK 
+        const user = await User.findOne({username});
+        if(!user){
+            return res.json({msg: "Incorrect username or password!", status: false});
+        }
+
+        const passwordCheck = await bycrpt.compare(password, user.password); // Varify ENTERED PASSWORD WITH ACTUAL STORED PASSWORD, USING BYCRPT LIBRARY
+        if(!passwordCheck){
+            return res.json({msg: "Incorrect username or password!", status: false});
+        }
+
+        delete user.password;   // Delete original password for security from backend
+
+        return res.json({status: true, user});
     } 
     catch (error) {
         next(error);

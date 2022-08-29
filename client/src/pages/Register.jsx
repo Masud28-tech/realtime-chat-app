@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify'; // For warning
@@ -75,6 +75,10 @@ const Register = () => {
       }
     }
   };
+
+  useEffect(() => {
+    if (localStorage.getItem('chat-app-user')) navigate('/');
+  }, []);
 
   return (
     <>
