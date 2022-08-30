@@ -62,7 +62,7 @@ const Login = () => {
       }
       else {
         localStorage.setItem("chat-app-user", JSON.stringify(data.user));
-        navigate('/');
+        navigate('/setAvatar');
       }
     }
   };

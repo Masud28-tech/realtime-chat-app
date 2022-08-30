@@ -7,7 +7,16 @@ import { ToastContainer, toast } from 'react-toastify'; // For warning
 import 'react-toastify/dist/ReactToastify.css';
 
 import styled from 'styled-components';
+import { setAvatarRoute } from '../utils/APIRoutes';
+import Loader from '../assets/loader.gif';
 
+const toastOptions = {
+    // position: 'upper-right',
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: 'dark',
+}
 
 const SetAvatarPage = () => {
     const navigate = useNavigate();
@@ -26,39 +35,75 @@ const SetAvatarPage = () => {
             }
             setAvatars(avatarsData);
             setIsLoading(false);
+            console.log("loading done!");
         }
         fetchAvatarsData();
     }, []);
 
+    const setAvatarAsProfilePic = async () => {
+        if (selectedAvatar === undefined) {
+            toast.error("Please select an avatar first!", toastOptions);
+        }
+        else {
+            const user = await JSON.parse(localStorage.getItem("chat-app-user"));
+
+            const { data } = await axios.post(`${setAvatarRoute}/${user._id}`, {
+                image: avatars[selectedAvatar] //Payload to be stored via post request
+            });
+
+            if (data.isSet) {
+                user.isAvatarImageSet = true;
+                user.avatarImage = data.image;
+                localStorage.setItem('chat-app-user', JSON.stringify(user));
+                navigate('/');
+            }
+            else {
+                toast.error("Error in setting avatar as profile pic!", toastOptions);
+            }
+        }
+    }
+
+    useEffect(() => {
+        if (!localStorage.getItem('chat-app-user'))
+            navigate('/login');
+    }, []);
 
     return (
         <>
-            <Container>
-                <div className="title-container">
-                    <h1>Pick an avatar as your profile picture</h1>
-                </div>
-                <div className="avatars">
-                    {
-                        avatars.map((avatar, index) => {
-                            return (
-                                <div
-                                    className={`avatar ${selectedAvatar === index ? "selected" : ""}`}
-                                    key={index}
+            {(isLoading) ? (
+                <Container>
+                    <div className="loader">
+                        <img src={Loader} alt="loading..." />
+                    </div>
+                </Container>
+            ) : (
+                <Container>
+                    <div className="title-container">
+                        <h1>Pick an avatar as your profile picture</h1>
+                    </div>
+                    <div className="avatars">
+                        {
+                            avatars.map((avatar, index) => {
+                                return (
+                                    <div
+                                        className={`avatar ${selectedAvatar === index ? "selected" : ""}`}
+                                        key={index}
 
-                                >
-                                    <img
-                                        src={`data:image/svg+xml;base64,${avatar}`}
-                                        alt="avatar"
-                                        onClick={() => setSelectedAvatar(index)}
-                                    />
-                                </div>
-                            )
-                        })
-                    }
-                </div>
-                <button className='submit-btn' >Choose as profile pic</button>
+                                    >
+                                        <img
+                                            src={`data:image/svg+xml;base64,${avatar}`}
+                                            alt="avatar"
+                                            onClick={() => setSelectedAvatar(index)}
+                                        />
+                                    </div>
+                                )
+                            })
+                        }
+                    </div>
+                    <button className='submit-btn' onClick={setAvatarAsProfilePic}>Choose as profile pic</button>
+                </Container>
+            )}
 
-            </Container>
             <ToastContainer />
         </>
     );
@@ -114,6 +159,10 @@ const Container = styled.div`
       &:hover{
         background-color:#2F8886;
       }
+    }
+
+    .loader{
+        max-inline-size: 100%;
     }
 
 `

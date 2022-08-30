@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         min: 5
     },
 
-    isAvatarSet: {
+    isAvatarImageSet: {
         type: Boolean,
         dafualt: false,
     },
@@ -30,7 +30,7 @@ const userSchema = new mongoose.Schema({
     avatarImage: {
         type: String,
         default: "",
-    }
+    },
 });
 
 module.exports = mongoose.model('Users', userSchema);
