@@ -5,6 +5,8 @@ import axios from 'axios';
 
 import { getAllUsersRoute } from '../utils/APIRoutes';
 import Contacts from '../components/Contacts';
+import Welcome from '../components/Welcome';
+import ChatContainer from '../components/ChatContainer';
 
 const Chat = () => {
   const navigate = useNavigate();
@@ -45,6 +47,13 @@ const Chat = () => {
     <Container>
       <div className="container">
         <Contacts contacts={contacts.data} currentUser={currentUser} chatChange={handleChatChange} />
+        {
+          currentChat === undefined ? (
+            <Welcome currentUser={currentUser} />
+          ):(
+            <ChatContainer currentChat={currentChat} />
+          )
+        }
       </div>
     </Container>
   )

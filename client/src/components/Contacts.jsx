@@ -77,6 +77,8 @@ const Container = styled.div`
     display: grid;
     grid-template-rows: 10% 75% 15%;
     background-color: #F66B0E;
+    overflow: hidden;
+    gap:0.5rem;
 
     .brand{
         display: flex;
@@ -96,7 +98,7 @@ const Container = styled.div`
         display:flex;
         justify-content: center;
         align-items:center;
-        gap:2rem;
+        gap:1rem;
         .avatar{
             img{
                 height: 3rem;
@@ -130,7 +132,7 @@ const Container = styled.div`
             min-height:5rem;
             width:90%;
             border-radius: 0.2rem;
-            padding: 0.4rem;
+            padding: 0.5rem;
             gap: 1rem;
             transition:0.5s ease-in-out;
             cursor:pointer;
@@ -142,7 +144,7 @@ const Container = styled.div`
             
         }
         .selected{
-                background-color:#3B9AE1;
+                background-color:#1CD6CE;
                 color:white;
         }
     }
