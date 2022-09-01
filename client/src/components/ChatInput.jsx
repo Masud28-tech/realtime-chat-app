@@ -52,7 +52,7 @@ const Container = styled.div`
   justify-content:space-between;
   gap:1rem;
   padding:0 2rem;
-  background-color: #3F3697;
+  background-color: #06113C;
   .button-container{
     display:flex;
     align-items:center;
@@ -101,7 +101,7 @@ const Container = styled.div`
     display:flex;
     align-items:center;
     justify-content:space-between;
-    background-color: #06113C;
+    background-color: #1F3C88;
     input{
       width: 100%;
       background-color:transparent;
