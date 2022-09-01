@@ -1,13 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
 import styled from 'styled-components';
+import { sendMessageRoute, getAllMessagesRoute } from '../utils/APIRoutes';
+
 import ChatInput from './ChatInput';
 import Logout from './Logout';
 import Messages from './Messages';
 
-const ChatContainer = ({ currentChat }) => {
-    
-    const sendMessage = (message) => {
-        alert(message);
+const ChatContainer = ({ currentChat, currentUser }) => {
+    const [messages, setMessages] = useState([]);
+
+    useEffect(() => {
+        async function fetchAllMessages() {
+            const response = await axios.post(getAllMessagesRoute, {
+                from: currentUser._id,
+                to: currentChat._id,
+            });
+            setMessages(response.data);
+        }
+        currentChat && currentUser && fetchAllMessages();
+    }, [currentChat])
+
+
+    const sendMessage = async (msg) => {
+        if (currentChat && currentUser) {
+            await axios.post(sendMessageRoute, {
+                from: currentUser._id,
+                to: currentChat._id,
+                message: msg,
+            });
+        }
     }
     return (
         <>
@@ -28,12 +50,10 @@ const ChatContainer = ({ currentChat }) => {
                             </div>
                             <Logout />
                         </div>
-                        <Messages />
-                        <ChatInput sendMessage={sendMessage} />
-                        {/* <div className="chat-messages">
+                        <div className="chat-messages">
+                            <Messages messages={messages} />
                         </div>
-                        <div className="chat-input">
-                        </div> */}
+                        <ChatInput sendMessage={sendMessage} />
 
 
 
@@ -46,6 +66,16 @@ const ChatContainer = ({ currentChat }) => {
 
 const Container = styled.div`
     padding-top: 1rem;
+    display:grid;
+    gap: 0.1rem;
+    grid-template-rows: 10% 80% 10%;
+    overflow:hidden;
+    @media screen and (min-width: 720px) and (max-width: 1080px){
+      grid-template-rows: 15% 70% 15%;
+    }
+    @media screen and (min-width: 420px) and (max-width: 720px){
+      grid-template-rows: 15% 70% 15%;
+    }
     .chat-header{
         display:flex;
         justify-content:space-between;

@@ -144,7 +144,7 @@ const Container = styled.div`
             
         }
         .selected{
-                background-color:#1CD6CE;
+                background-color:#1EAE98;
                 color:white;
         }
     }

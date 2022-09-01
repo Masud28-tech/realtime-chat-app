@@ -50,8 +50,8 @@ const Container = styled.div`
   grid-template-columns: 5% 95%;
   align-items:center;
   justify-content:space-between;
-  gap:0.3rem;
-  padding:0.3rem 2rem;
+  gap:1rem;
+  padding:0 2rem;
   background-color: #3F3697;
   .button-container{
     display:flex;
@@ -96,14 +96,14 @@ const Container = styled.div`
   }
   .input-container{
     width:100%;
+    height:2.5rem;
     border-radius: 2rem;
     display:flex;
     align-items:center;
-    gap:2rem;
+    justify-content:space-between;
     background-color: #06113C;
     input{
-      width: 90%;
-      height:60%;
+      width: 100%;
       background-color:transparent;
       color:white;
       border:none;
@@ -117,7 +117,7 @@ const Container = styled.div`
       }
     }
     button{
-      padding:0.3rem 2rem;
+      padding:0.4rem 1.7rem;
       border-radius:2rem;
       display:flex;
       align-items:center;
