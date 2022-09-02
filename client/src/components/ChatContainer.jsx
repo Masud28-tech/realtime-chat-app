@@ -2,11 +2,11 @@ import { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { sendMessageRoute, getAllMessagesRoute } from '../utils/APIRoutes';
+import { sendMessageRoute, getAllMessagesRoute, clearChatMessagesRoute } from '../utils/APIRoutes';
 
 import ChatInput from './ChatInput';
 import Logout from './Logout';
-import Messages from './Messages';
+import ClearMessages from './ClearMessages';
 
 const ChatContainer = ({ currentChat, currentUser, socket }) => {
     const scrollRef = useRef();
@@ -45,6 +45,16 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
         }
     };
 
+    const handleClearChatMessages = async () => {
+        if(currentChat && currentUser){
+            await axios.post(clearChatMessagesRoute, {
+                from: currentUser._id,
+                to: currentChat._id,
+            });
+            setMessages([]);
+        }
+    }
+
     useEffect(() => {
         if (socket.current) {
             socket.current.on("msg-recieve", (msg) => {
@@ -78,7 +88,10 @@ const ChatContainer = ({ currentChat, currentUser, socket }) => {
                                     <h3>{currentChat.username}</h3>
                                 </div>
                             </div>
-                            <Logout />
+                            <div className='header-utils'>
+                                <Logout />
+                                <ClearMessages clearChatMessages={handleClearChatMessages} messages={messages} />
+                            </div>
                         </div>
                         <div className="chat-messages">
                             {
@@ -136,6 +149,13 @@ const Container = styled.div`
                 }
             }
         }
+        .header-utils{
+            display:flex;
+            align-items:center;
+            flex-direction:row;
+            justify-content:center;
+            gap:1rem;
+        }
     }
     .chat-messages{
         color:white;
@@ -168,13 +188,13 @@ const Container = styled.div`
         .sended{
             justify-content: flex-end;
             .content{
-            background-color:#0F3460;
+            background-color:#16213E;
             }
         }
         .received{
             justify-content:flex-start;
             .content{
-            background-color:#16213E;
+            background-color:#0F3460;
         }
     }
 }

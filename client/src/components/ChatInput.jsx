@@ -101,7 +101,8 @@ const Container = styled.div`
     display:flex;
     align-items:center;
     justify-content:space-between;
-    background-color: #1F3C88;
+    background-color: #3F3697;
+    box-shadow:0 2px 2px #BBE1FA;
     input{
       width: 100%;
       background-color:transparent;

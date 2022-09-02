@@ -94,11 +94,13 @@ const Container = styled.div`
         }
     }
     .current-user{
-        background-color:#06113C;
+        background-color:#F66B0E;
         display:flex;
         justify-content: center;
         align-items:center;
         gap:1rem;
+        border:0.2rem solid #EFEFEF;
+        height:11vh;
         .avatar{
             img{
                 height: 3rem;
@@ -144,8 +146,8 @@ const Container = styled.div`
             
         }
         .selected{
-                background-color:#1EAE98;
-                color:white;
+                background-color:#3CCF4E;
+                color:#EFEFEF;
         }
     }
 

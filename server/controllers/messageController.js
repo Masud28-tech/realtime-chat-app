@@ -27,14 +27,35 @@ module.exports.getAllMessages = async (req, res, next) => {
             })
             .sort({ updatedAt: 1 })
 
-            const messagesToShow = messages.map(msg => {
-                return {
-                    fromSelf: msg.sender.toString() === from,
-                    message: msg.message.text,
-                };
+        const messagesToShow = messages.map(msg => {
+            return {
+                fromSelf: msg.sender.toString() === from,
+                message: msg.message.text,
+            };
+        });
+
+        return res.json(messagesToShow);
+
+    } catch (ex) {
+        next(ex);
+    }
+}
+
+module.exports.deleteAllMessages = async (req, res, next) => {
+    try {
+        const { to, from } = req.body;
+        const data = await Messages
+            .deleteMany({
+                users: { $all: [from, to], }
+            }).then(function () {
+                console.log("Chat deleted successfully."); // Success
+            }).catch(function (error) {
+                console.log(error); // Failure
             });
 
-            return res.json(messagesToShow);
+        if (data) return res.json({ msg: "Messages deleted from db successfully." });
+        return res.json({ msg: "Faild to delete message from db!" });
+
 
     } catch (ex) {
         next(ex);
