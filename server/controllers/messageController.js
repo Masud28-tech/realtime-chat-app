@@ -47,8 +47,6 @@ module.exports.deleteAllMessages = async (req, res, next) => {
         const data = await Messages
             .deleteMany({
                 users: { $all: [from, to], }
-            }).then(function () {
-                console.log("Chat deleted successfully."); // Success
             }).catch(function (error) {
                 console.log(error); // Failure
             });

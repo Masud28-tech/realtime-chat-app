@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { BiDotsVertical } from 'react-icons/bi';
 import styled from 'styled-components';
+import { ToastContainer, toast } from 'react-toastify'; // For warning
+import 'react-toastify/dist/ReactToastify.css';
+
+const toastOptions = {
+    position: "bottom-right",
+    autoClose: 8000,
+    pauseOnHover: true,
+    draggable: true,
+    theme: 'dark',
+}
 
 
 const ClearMessages = ({ clearChatMessages, messages }) => {
@@ -11,6 +21,7 @@ const ClearMessages = ({ clearChatMessages, messages }) => {
 
     const handleClearChatMessages = (e) => {
         e.preventDefault();
+        toast.warning("Your chat is deleted!", toastOptions);
         clearChatMessages();
     }
 
@@ -26,10 +37,13 @@ const ClearMessages = ({ clearChatMessages, messages }) => {
         );
     }
     return (
-        <Container>
-            <BiDotsVertical onClick={handleToggleModal} />
-            {isModalOpen && <ClearChatModal />}
-        </Container>
+        <>
+            <Container>
+                <BiDotsVertical onClick={handleToggleModal} />
+                {isModalOpen && <ClearChatModal />}
+            </Container>
+            <ToastContainer />
+        </>
     )
 }
 
