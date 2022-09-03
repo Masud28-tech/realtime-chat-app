@@ -1,12 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 const cors = require('cors');
 const socket = require('socket.io');
 const userRoutes = require("./routes/userRoute");
 const messagesRoutes = require("./routes/messagesRoute");
 
+dotenv.config({path: './config.env'});
 const app = express();
-require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
@@ -23,14 +24,15 @@ mongoose.connect(process.env.MONGO_URI, {
     console.log(err.message);
 });
 
-const server = app.listen(process.env.PORT, () => {
+let port = process.env.PORT || 5000;
+const server = app.listen(port, () => {
     console.log(`Server is started on Port ${process.env.PORT}`);
 });
 
 //  SOCKET.IO: work for establishing real-time chat rendering and sending/receiving
 const io = socket(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: process.env.CLIENT_URI,
         credentials: true,
     },
 });

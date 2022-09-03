@@ -2,10 +2,13 @@
   "name": "backend-chat-app",
   "version": "1.0.0",
   "description": "real time chat application project using MERN and socket.io ",
+  "engines": {
+    "node": "16.13.1"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
@@ -22,6 +25,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.1",
     "express": "^4.18.1",
+    "heroku": "^7.63.0",
     "mongoose": "^6.5.2",
     "nodemon": "^2.0.19",
     "socket.io": "^4.5.1"
