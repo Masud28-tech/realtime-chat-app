@@ -75,7 +75,7 @@ const Contacts = ({ contacts, currentUser, chatChange }) => {
 
 const Container = styled.div`
     display: grid;
-    grid-template-rows: 10% 75% 15%;
+    grid-template-rows: 10% 73% 17%;
     background-color: #F66B0E;
     overflow: hidden;
     gap:0.5rem;
@@ -94,13 +94,13 @@ const Container = styled.div`
         }
     }
     .current-user{
-        background-color:#F66B0E;
+        background-color:#06113C;
         display:flex;
         justify-content: center;
         align-items:center;
+        border:0.1rem solid black;
         gap:1rem;
-        border:0.2rem solid #EFEFEF;
-        height:11vh;
+        height:13vh;
         .avatar{
             img{
                 height: 3rem;
